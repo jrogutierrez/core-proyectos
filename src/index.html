@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadora Regla del 30 - Brigadistas</title>
+<style>
+    :root {
+        --bg-main: #0a0a0a;
+        --bg-panel: #1e1e1e;
+        --text-primary: #c0c0c0;
+        --camo-green: #2b3a2b;
+        --camo-brown: #3b2e2e;
+        --camo-olive: #3a4b2c;
+    }
+    body {
+        margin:0;
+        font-family: "Consolas", "Courier New", monospace;
+        background: var(--bg-main);
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    .card {
+        background: var(--bg-panel);
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.7);
+        width: 320px;
+    }
+    h1 {
+        text-align:center;
+        margin-bottom:1rem;
+        color:#8fbc8f;
+    }
+    label {
+        display:block;
+        margin-top:1rem;
+        font-size:0.9rem;
+    }
+    input[type="number"] {
+        width:100%;
+        padding:0.5rem;
+        margin-top:0.3rem;
+        border:none;
+        border-radius:4px;
+        background:#2a2a2a;
+        color:#e0e0e0;
+    }
+    button {
+        width:100%;
+        margin-top:1.5rem;
+        padding:0.7rem;
+        background:#556b2f;
+        border:none;
+        border-radius:4px;
+        color:#fff;
+        font-weight:bold;
+        cursor:pointer;
+        transition:background 0.3s;
+    }
+    button:hover {
+        background:#6b8e23;
+    }
+    #result {
+        margin-top:1.5rem;
+        text-align:center;
+        font-size:1.2rem;
+        font-weight:bold;
+        padding:0.8rem;
+        border-radius:6px;
+        color:#fff;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(1); }
+    }
+</style>
+</head>
+<body>
+<div class="card">
+    <h1>Regla del 30</h1>
+    <label for="temp">Temperatura (°C)</label>
+    <input id="temp" type="number" placeholder="Ej: 28">
+    <label for="hum">Humedad (%)</label>
+    <input id="hum" type="number" placeholder="Ej: 45">
+    <label for="wind">Viento (km/h)</label>
+    <input id="wind" type="number" placeholder="Ej: 15">
+    <button id="calcBtn">Calcular</button>
+    <div id="result"></div>
+</div>
+<script>
+    const calcBtn = document.getElementById('calcBtn');
+    const resultDiv = document.getElementById('result');
+
+    function clamp(val, min, max) {
+        return Math.min(Math.max(val, min), max);
+    }
+
+    function interpolateHSL(risk) {
+        // risk: 0 (safe) to 1 (extreme)
+        const hue = 120 - risk * 120; // 120 -> green, 60 -> yellow, 0 -> red
+        return `hsl(${hue}, 70%, 45%)`;
+    }
+
+    function calculateRisk() {
+        const temp = parseFloat(document.getElementById('temp').value) || 0;
+        const hum = parseFloat(document.getElementById('hum').value) || 0;
+        const wind = parseFloat(document.getElementById('wind').value) || 0;
+
+        // Individual risk factors (0 to 1)
+        const tempRisk = clamp(temp / 30, 0, 1);
+        const humRisk = clamp((30 - hum) / 30, 0, 1); // low humidity is risky
+        const windRisk = clamp(wind / 30, 0, 1);
+
+        const overallRisk = (tempRisk + humRisk + windRisk) / 3;
+
+        // Determine condition count
+        const conditionsMet = (temp >= 30 ? 1 : 0) + (hum <= 30 ? 1 : 0) + (wind >= 30 ? 1 : 0);
+
+        let statusText = '';
+        if (conditionsMet === 3) {
+            statusText = '🔴 PELIGRO EXTREMO';
+        } else if (conditionsMet >= 1) {
+            statusText = '🟡 PRECAUCIÓN';
+        } else {
+            statusText = '🟢 SEGURO';
+        }
+
+        // Update result display
+        resultDiv.textContent = `${statusText} (${(overallRisk * 100).toFixed(0)}% de riesgo)`;
+        resultDiv.style.backgroundColor = interpolateHSL(overallRisk);
+    }
+
+    calcBtn.addEventListener('click', calculateRisk);
+</script>
+</body>
+</html>
