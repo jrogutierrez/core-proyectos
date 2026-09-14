@@ -1,44 +1,187 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha SOS Brigadista</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Calculadora de Índice de Peligro de Incendio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- jsPDF CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0d0d0d;
+            --bg-card: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --accent-green: #4caf50;
+            --accent-yellow: #ffeb3b;
+            --accent-red: #f44336;
+            --font-mono: 'Courier New', monospace;
+        }
+        body {
+            margin: 0;
+            font-family: var(--font-mono);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            padding: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+        .label { font-weight: bold; }
+        .value { font-family: var(--font-mono); }
+        .semaforo {
+            font-size: 3rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .btn {
+            background: var(--accent-green);
+            border: none;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .btn:hover { opacity: 0.9; }
+        .status-safe   { color: var(--accent-green); }
+        .status-warn   { color: var(--accent-yellow); }
+        .status-danger{ color: var(--accent-red); }
+        footer { margin-top: auto; padding: 0.5rem; font-size: 0.8rem; opacity: 0.6; }
+    </style>
 </head>
 <body>
-<!-- v5: sin DOMPurify, sin Firebase, sanitización manual con escapeHTML -->
-<div class="container">
-  <h1>🚨 Ficha SOS Brigadista</h1>
-  <p class="subtitle">Herramienta de campo — Corrientes, Argentina</p>
-  
-  <form id="sosForm">
-    <label>Nombre completo: <input type="text" id="nombre" required></label>
-    <label>DNI: <input type="text" id="dni" required pattern="\d{7,8}"></label>
-    <label>Edad: <input type="number" id="edad" required min="18" max="99"></label>
-    <label>Teléfono de emergencia: <input type="tel" id="telEmergencia" required></label>
-    <label>Condición médica: <input type="text" id="condicionMedica" placeholder="Alergias, medicación, grupo sanguíneo"></label>
-    <label>Estado actual:
-      <select id="estado" required>
-        <option value="">Seleccioná...</option>
-        <option value="En base">En base</option>
-        <option value="En ruta">En ruta</option>
-        <option value="En zona de riesgo">En zona de riesgo</option>
-        <option value="EMERGENCIA">🆘 EMERGENCIA</option>
-      </select>
-    </label>
-    <button type="button" id="generarPdf">📄 Generar Ficha PDF</button>
-  </form>
-  
-  <div id="mensaje"></div>
-</div>
+    <header>📊 Calculadora de Índice de Peligro de Incendio</header>
 
-<script src="script.js"></script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(() => console.log('✅ SW registrado — modo offline listo'));
-}
-</script>
+    <section class="card" id="app">
+        <div class="data-row"><span class="label">Temperatura (°C):</span><span class="value" id="temp">‑</span></div>
+        <div class="data-row"><span class="label">Humedad (%):</span><span class="value" id="hum">‑</span></div>
+        <div class="data-row"><span class="label">Viento (km/h):</span><span class="value" id="wind">‑</span></div>
+
+        <div class="semaforo" id="semaforo">⏳</div>
+
+        <button class="btn" id="exportBtn">Exportar reporte PDF</button>
+    </section>
+
+    <footer>© 2026 Calculadora de Índice de Peligro de Incendio – JRG</footer>
+
+    <script>
+        // ---------- Utilidades ----------
+        const escapeHTML = (str) => {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        };
+
+        // ---------- Config ----------
+        const API_URL = 'http://45.82.73.208/v1/situation?lat=-27.4712&lon=-58.8390';
+        const UPDATE_INTERVAL = 5 * 60 * 1000; // 5 minutos
+
+        // ---------- DOM ----------
+        const tempEl = document.getElementById('temp');
+        const humEl  = document.getElementById('hum');
+        const windEl = document.getElementById('wind');
+        const semaforoEl = document.getElementById('semaforo');
+        const exportBtn = document.getElementById('exportBtn');
+
+        // ---------- Lógica del índice ----------
+        const aplicarReglaDel30 = ({temp, hum, wind}) => {
+            const condTemp = temp >= 30;
+            const condHum  = hum <= 30;
+            const condWind = wind >= 30;
+
+            if (condTemp && condHum && condWind) return 'danger';
+            if (condTemp || condHum || condWind)   return 'warn';
+            return 'safe';
+        };
+
+        const actualizarUI = (data, status) => {
+            tempEl.innerHTML = escapeHTML(data.temp.toFixed(1));
+            humEl.innerHTML  = escapeHTML(data.hum.toFixed(1));
+            windEl.innerHTML = escapeHTML(data.wind.toFixed(1));
+
+            const map = {
+                safe:   {icon: '🟢', text: 'Seguro',    cls: 'status-safe'},
+                warn:   {icon: '🟡', text: 'Precaución',cls: 'status-warn'},
+                danger: {icon: '🔴', text: 'Peligro Extremo',cls: 'status-danger'}
+            };
+            const {icon, text, cls} = map[status];
+            semaforoEl.textContent = `${icon} ${text}`;
+            semaforoEl.className = `semaforo ${cls}`;
+        };
+
+        // ---------- Fetch ----------
+        const obtenerDatos = async () => {
+            try {
+                const resp = await fetch(API_URL, {cache: 'no-store'});
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const json = await resp.json();
+
+                // Normalizamos los nombres de los campos (pueden variar)
+                const temp = Number(json.temperature ?? json.temp ?? json.t ?? 0);
+                const hum  = Number(json.humidity   ?? json.hum  ?? json.h ?? 0);
+                const wind = Number(json.wind_speed ?? json.wind ?? json.w ?? 0);
+
+                const data = {temp, hum, wind};
+                const status = aplicarReglaDel30(data);
+                actualizarUI(data, status);
+            } catch (e) {
+                console.error('Error al obtener datos:', e);
+                semaforoEl.textContent = '⚠️ Error de conexión';
+                semaforoEl.className = 'semaforo status-warn';
+            }
+        };
+
+        // ---------- Export PDF ----------
+        const exportarPDF = () => {
+            const {jsPDF} = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont('courier', 'normal');
+            doc.setFontSize(16);
+            doc.text('Reporte de Índice de Peligro de Incendio', 105, 20, {align: 'center'});
+
+            doc.setFontSize(12);
+            doc.text(`Fecha y hora: ${new Date().toLocaleString()}`, 20, 35);
+            doc.text(`Temperatura: ${tempEl.textContent} °C`, 20, 45);
+            doc.text(`Humedad: ${humEl.textContent} %`, 20, 55);
+            doc.text(`Viento: ${windEl.textContent} km/h`, 20, 65);
+            doc.text(`Estado: ${semaforoEl.textContent}`, 20, 75);
+
+            doc.save('reporte_incendio.pdf');
+        };
+
+        // ---------- Event Listeners ----------
+        exportBtn.addEventListener('click', exportarPDF);
+
+        // ---------- Inicialización ----------
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW registrado', reg.scope))
+                .catch(err => console.warn('SW registro falló', err));
+        }
+
+        obtenerDatos();
+        setInterval(obtenerDatos, UPDATE_INTERVAL);
+    </script>
 </body>
 </html>
