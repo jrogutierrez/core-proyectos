@@ -1,33 +1,52 @@
-# Referencia del proyecto – Calculadora de Índice de Peligro de Incendio
+# Referencia del proyecto – Observatorio Planetario
 
-## Estado actual (2026‑09‑14)
+## 1. Objetivos
+- Presentar el observatorio de forma atractiva y educativa.
+- Mostrar imágenes de los planetas con alta calidad.
+- Facilitar el contacto de usuarios interesados.
 
-- **Arquitectura**: aplicación *single‑page* dentro de `src/` con:
-  - `index.html` (HTML + CSS + JS) que consulta la API del Defensor JRG, procesa los datos y muestra un semáforo de riesgo.
-  - `sw.js` Service Worker para funcionamiento offline (caché de recursos estáticos y estrategia *network‑first* para la API).
-- **Datos**: se solicitan a `http://45.82.73.208:4000/v1/situation?lat=-27.4712&lon=-58.8390`.  
-  Los campos aceptados son `temperature|temp|t`, `humidity|hum|h` y `wind_speed|wind|w`.  
-  Cualquier variación es normalizada antes de aplicar la regla.
-- **Regla del 30**:
-  - **Temperatura ≥ 30 °C**
-  - **Humedad ≤ 30 %**
-  - **Viento ≥ 30 km/h**
-  - **Resultado**  
-    - 3 condiciones → 🔴 *Peligro Extremo*  
-    - 1‑2 condiciones → 🟡 *Precaución*  
-    - 0 condiciones → 🟢 *Seguro*
-- **UI / UX**:
-  - Tema oscuro tipo “dashboard táctico”.
-  - Tipografía monoespaciada para dar sensación de herramienta de campo.
-  - Botón “Exportar reporte PDF” que genera un documento con jsPDF (CDN).
-- **Seguridad**:
-  - Sanitización de los valores mostrados mediante `escapeHTML` nativo.
-  - No se usa Firebase ni ningún backend adicional.
-- **Persistencia offline**:
-  - `sw.js` guarda `index.html` y cualquier recurso externo solicitado (p.ej. jsPDF) para que la herramienta siga operando sin conexión.
-- **Próximos pasos** (opcional):
-  - Añadir notificaciones push cuando el estado cambie a *Peligro Extremo*.
-  - Guardar histórico en `localStorage` para análisis de tendencias.
+## 2. Stack tecnológico elegido
+- **HTML5** + **Tailwind CSS** (CDN) para estilos rápidos y responsivos.
+- **Alpine.js** (CDN) para interactividad ligera (lightbox, toggle de menú).
+- **Netlify** (opcional) para despliegue estático.
 
----  
-*Documentado y generado por el Escriba (📝) del ecosistema C.O.R.E.*  
+## 3. Estado actual
+- Documentación generada (10 archivos).
+- No hay código fuente aún; el Obrero iniciará con la estructura base.
+
+## 4. Arquitectura de carpetas
+```
+/
+│─ README.md
+│
+├─ docs/
+│   ├─ specs.md
+│   ├─ referencia.md
+│   ├─ guia-diseno.md
+│   ├─ arquitectura-datos.md
+│   ├─ arquitectura-seguridad.md
+│   ├─ stack-tecnologico.md
+│   ├─ analisis-riesgos.md
+│   ├─ plan-desarrollo.md
+│   └─ COMO-USAR-ESTE-PROYECTO.md
+│
+├─ src/
+│   └─ (próximamente index.html, assets, etc.)
+│
+└─ uploads/
+    └─ (imágenes de planetas, logo, etc.)
+```
+
+## 5. Variables clave
+- `PROJECT_NAME = "Observatorio Planetario"`
+- `PRIMARY_COLOR = "#1e3a8a"` (azul oscuro)
+- `FONT_FAMILY = "Inter, system-ui, sans-serif"`
+
+## 6. Dependencias externas (CDN)
+- Tailwind CSS (`https://cdn.tailwindcss.com`)
+- Alpine.js (`https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js`)
+
+## 7. Próximos pasos
+- **Etapa 1:** Setup de carpetas y archivos base (README + docs).  
+- **Etapa 2:** Implementar HTML estático con Tailwind y Alpine.  
+- **Etapa 3:** Optimizar imágenes y pruebas de accesibilidad.  
