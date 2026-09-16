@@ -1,49 +1,63 @@
-# Arquitectura de datos – Observatorio Planetario
+# Arquitectura de datos – Panadería Don Corrientes
 
 ## 1. Modelo de datos conceptual
-| Entidad | Atributos |
-|---------|-----------|
-| **Planeta** | id, nombre, descripción, url_imagen, alt_text |
-| **Contacto** | id, nombre, email, mensaje, fecha_envio |
-| **Sección** | id, slug, título, contenido_html |
+| Entidad | Descripción |
+|---------|-------------|
+| **Producto** | Pan, factura, torta, empanada. |
+| **ImagenProducto** | URL de la foto (WebP/JPEG). |
+| **Contacto** | Dirección, teléfono, email, horario. |
+| **RedSocial** | Nombre y URL de la red (Facebook, Instagram). |
+| **DeliveryInfo** | Número WhatsApp, mensaje predefinido. |
 
-## 2. Fuente de datos
-- **Imágenes de planetas:** Almacenadas en `uploads/` (formato WebP/AVIF).  
-- **Contenido estático:** Texto de secciones guardado en archivos markdown dentro de `src/content/` (será creado por el Obrero).  
+## 2. Esquema JSON‑LD (Bakery)
+*(ver `guia-diseno.md` para detalle)*
 
-## 3. Flujo de datos
-1. El navegador carga `index.html`.  
-2. Alpine.js lee un JSON estático (`data/planetas.json`) para poblar la galería.  
-3. El formulario envía datos a un endpoint externo (por ejemplo Formspree) – no se persiste en backend en esta fase.
+## 3. Datos estáticos
+Los datos se entregarán como **archivos JSON** dentro de `src/data/` (será creado por el Obrero). Ejemplo:
 
-## 4. Esquema JSON de ejemplo (planetas)
 ```json
-[
-  {
-    "id": 1,
-    "nombre": "Mercurio",
-    "descripcion": "El planeta más cercano al Sol.",
-    "url_imagen": "/uploads/mercurio.webp",
-    "alt_text": "Imagen de Mercurio"
+{
+  "productos": [
+    {
+      "id": "pan-casero",
+      "nombre": "Pan casero",
+      "descripcion": "Pan artesanal horneado diariamente.",
+      "imagen": "/uploads/pan-casero.webp"
+    },
+    {
+      "id": "factura-chocolate",
+      "nombre": "Factura de chocolate",
+      "descripcion": "Deliciosa factura con relleno de chocolate.",
+      "imagen": "/uploads/factura-chocolate.webp"
+    }
+  ],
+  "contacto": {
+    "direccion": "Av. San Martín 123, Corrientes, AR",
+    "telefono": "+54 9 341 1234567",
+    "email": "info@panaderiadoncorrientes.com",
+    "horario": "Lun‑Vie 07:00‑20:00, Sáb 08:00‑14:00"
   },
-  {
-    "id": 2,
-    "nombre": "Venus",
-    "descripcion": "El planeta más caliente.",
-    "url_imagen": "/uploads/venus.webp",
-    "alt_text": "Imagen de Venus"
-  }
-  // ... resto de planetas
-]
+  "delivery": {
+    "whatsapp": "+5493411234567",
+    "mensaje": "¡Hola! Quiero hacer un pedido de..."
+  },
+  "redes": [
+    { "nombre": "Facebook", "url": "https://facebook.com/panaderiadoncorrientes" },
+    { "nombre": "Instagram", "url": "https://instagram.com/panaderiadoncorrientes" }
+  ]
+}
 ```
 
-## 5. Persistencia
-- No hay base de datos en esta versión.  
-- Los datos del formulario pueden enviarse a un servicio de terceros (Formspree, Getform, etc.).
+## 4. Persistencia
+Todo es estático; no hay base de datos. Los archivos JSON serán incluidos en el build y servidos como recursos estáticos.
 
-## 6. Seguridad de datos
-- **CORS:** Solo se permite cargar recursos desde el mismo dominio.  
-- **Validación:** Frontend valida campos obligatorios y formato de email antes de enviar.
+## 5. Seguridad de datos
+- Los JSON son de solo lectura.  
+- No se exponen datos sensibles (no hay credenciales).  
 
-## 7. Versionado
-- Cada cambio de contenido se versiona mediante Git (commit por cada actualización de `uploads/` o `data/`).  
+## 6. Versionado
+- Cada cambio de contenido se versionará en Git (commit con mensaje descriptivo).  
+
+## 7. Consideraciones de internacionalización
+- Texto en español (es‑AR).  
+- Posible extensión a inglés futuro mediante archivos `i18n/*.json`.  

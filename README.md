@@ -1,14 +1,19 @@
-# Observatorio Planetario
+# Panadería Don Corrientes – Landing Page
 
-**Descripción:** Landing page informativa del observatorio con imágenes de planetas.  
-**Estado actual:** Documentación inicial generada, listo para iniciar el desarrollo.  
+**Nombre del proyecto:** Panadería Don Corrientes  
+**Descripción:** Landing page informativa para la panadería artesanal de Corrientes, Argentina. Presenta productos (pan casero, facturas, tortas, empanadas), muestra el local físico y habilita la opción de delivery.  
+**Estado actual:** Arquitectura y documentación generadas, listo para iniciar desarrollo.  
 
-## 📂 Estructura del workspace
+**Operador:** JRG (Capa 8)  
+**Fecha de creación:** 2026‑09‑16  
+
+## Estructura de carpetas (en criollo)
+
 ```
-/ (raíz)
-│─ README.md                ← Este panel de control
+/                ← raíz
+│   README.md    ← panel de control, lo editás a mano
 │
-├─ docs/
+├─ docs/         ← toda la documentación del proyecto
 │   ├─ specs.md
 │   ├─ referencia.md
 │   ├─ guia-diseno.md
@@ -19,14 +24,15 @@
 │   ├─ plan-desarrollo.md
 │   └─ COMO-USAR-ESTE-PROYECTO.md
 │
-├─ src/                     ← Código fuente (vacío por ahora)
-└─ uploads/                 ← Recursos estáticos (imágenes, etc.)
+├─ src/          ← (vacío por ahora, lo llenará el Obrero)
+│
+└─ uploads/      ← imágenes, logos, etc. (por cargar)
+
 ```
 
-## 👤 Operador
-**Operador:** JRG (Capa 8)  
-**Fecha de creación:** 2026-09-16  
+**¿Qué tenés que hacer ahora?**  
+Abrí el `README.md`, revisá que todo esté a tu gusto y, cuando estés conforme, hacé click en el botón 🚀 **ARRANCAR PROYECTO** o decile al Obrero “arrancá”.  
 
----
+---  
 
-*Este README es el panel de control. Cambia nombre, descripción o estructura aquí mismo si lo necesitás.*  
+*Este archivo es el panel de control de Capa 8. Si necesitás cambiar el nombre o la descripción, editá este README directamente.*  

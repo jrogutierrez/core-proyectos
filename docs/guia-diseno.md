@@ -1,67 +1,62 @@
-# Guía de diseño – Observatorio Planetario
+# Guía de diseño – Panadería Don Corrientes
 
 ## 1. Paleta de colores (HEX)
-| Uso | Color |
-|-----|-------|
-| Primario | #1e3a8a (azul noche) |
-| Secundario | #f59e0b (ámbar) |
-| Fondo | #f3f4f6 (gris claro) |
-| Texto principal | #111827 (gris casi negro) |
-| Texto secundario | #6b7280 (gris medio) |
-| Accento | #10b981 (verde) |
+| Uso | Color | HEX |
+|-----|-------|-----|
+| Primario | Marrón pan | `#8B4513` |
+| Secundario | Crema pastel | `#F5E1A4` |
+| Accento | Naranja horno | `#D2691E` |
+| Fondo | Blanco nieve | `#FFFFFF` |
+| Texto | Gris oscuro | `#333333` |
+| Link/CTA | Verde hoja | `#2E8B57` |
 
 ## 2. Tipografía
-- **Fuente principal:** `Inter` (cargada vía Google Fonts).  
-- **Fallback local:** `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`.
+- **Principal:** `system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` (fallback local).  
+- **Secundaria (decorativa):** `Georgia, "Times New Roman", Times, serif` para títulos de sección.
 
-```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body { font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-</style>
-```
-
-## 3. Breakpoints responsive (Tailwind)
-- **sm:** 640 px  
-- **md:** 768 px  
-- **lg:** 1024 px  
-- **xl:** 1280 px  
-- **2xl:** 1536 px  
+## 3. Breakpoints responsive
+| Dispositivo | Min‑width |
+|-------------|----------|
+| Mobile | 320 px |
+| Tablet | 768 px |
+| Desktop | 1024 px |
 
 ## 4. Componentes UI
-| Componente | Descripción | Clase Tailwind sugerida |
-|------------|-------------|--------------------------|
-| Botón primario | Acción principal (ej. “Conocer más”) | `bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-primary/90` |
-| Card galería | Miniatura de planeta | `rounded overflow-hidden shadow-lg hover:shadow-2xl transition-shadow` |
-| Modal Lightbox | Visualizador de imagen grande | `fixed inset-0 bg-black/70 flex items-center justify-center z-50` |
-| Formulario | Inputs y botón enviar | `border border-gray-300 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-primary` |
+- **Botón CTA:** fondo `#2E8B57`, texto blanco, border‑radius 4 px, hover `#276749`.  
+- **Tarjeta de producto:** borde fino `#E2E8F0`, sombra ligera, padding 1rem.  
+- **Header sticky:** fondo `#FFFFFF`, sombra `0 2px 4px rgba(0,0,0,0.1)`.  
+- **Footer:** fondo `#F5E1A4`, texto `#333333`.
 
 ## 5. SEO on‑page
-- **Title:** “Observatorio Planetario – Descubre los planetas”  
-- **Meta description:** “Landing del Observatorio Planetario con imágenes de alta calidad de los planetas del Sistema Solar. Aprende, explora y contáctanos.”  
-- **Open Graph:** `og:title`, `og:description`, `og:image` (imagen hero).  
-- **Schema.org:** Tipo `Organization` con `name`, `url`, `logo`, `contactPoint`.
+- **Meta title:** “Panadería Don Corrientes – Pan artesanal en Corrientes, AR”.  
+- **Meta description:** “Descubrí nuestros panes caseros, facturas, tortas y empanadas. Pedí delivery o visitanos en el centro de Corrientes.”  
+- **Open Graph:** imagen destacada (`uploads/og-image.jpg`).  
+- **Schema.org:** tipo `Bakery` con `name`, `address`, `telephone`, `url`, `image`.  
 
-## 6. Schema.org (JSON‑LD)
+## 6. Schema.org (JSON‑LD) básico
 ```json
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Observatorio Planetario",
-  "url": "https://tusitio.com",
-  "logo": "https://tusitio.com/uploads/logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+1-555-1234",
-    "contactType": "Customer Service",
-    "email": "info@observatorioplanetario.com"
-  }
+  "@type": "Bakery",
+  "name": "Panadería Don Corrientes",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. San Martín 123",
+    "addressLocality": "Corrientes",
+    "addressRegion": "Corrientes",
+    "postalCode": "3400",
+    "addressCountry": "AR"
+  },
+  "telephone": "+54 9 341 1234567",
+  "url": "https://panaderiadoncorrientes.com",
+  "image": "https://panaderiadoncorrientes.com/uploads/logo.png",
+  "servesCuisine": ["Pan artesanal", "Facturas", "Tortas", "Empanadas"]
 }
 ```
 
-## 7. Accesibilidad (WCAG 2.1 AA)
-- **Contraste:** Cumplir al menos 4.5:1 (ver tabla de colores).  
-- **Alt text:** Todas las imágenes de planetas con descripción (`alt="Imagen de Marte"`).  
-- **Navegación por teclado:** Enlaces y botones accesibles con `tabindex`.  
-- **ARIA:** Lightbox con `role="dialog"` y `aria-modal="true"`.  
-- **Tamaño de fuente:** Mínimo 16 px en cuerpo, escalable.  
+## 7. Accesibilidad WCAG 2.1 AA
+- **Contraste** ≥ 4.5:1 (ver tabla de colores).  
+- **Enfoque visible**: outline `2px solid #2E8B57` en elementos interactivos.  
+- **Aria‑labels** en botones y enlaces externos.  
+- **Texto alternativo** en todas las imágenes (`alt` descriptivo).  
+- **Orden lógico** del DOM y encabezados (`h1` → `h2` → `h3`).  

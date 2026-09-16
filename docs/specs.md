@@ -1,42 +1,51 @@
-# Especificaciones del proyecto – Observatorio Planetario
+# Especificaciones del proyecto – Panadería Don Corrientes
 
-## 1. Visión del proyecto
-Crear una landing page atractiva que presente el observatorio, sus instalaciones y permita a los visitantes explorar imágenes de planetas, fomentando el interés por la astronomía.
+## 1. Introducción
+Landing page para la panadería artesanal “Don Corrientes”. Debe ser informativa, atractiva y responsiva, con énfasis en SEO local y accesibilidad.
 
 ## 2. Alcance
-- Página única (single‑page) responsiva.
-- Sección de bienvenida, galería de planetas, información del observatorio y formulario de contacto.
-- No incluye backend ni sistema de reservas.
+- Presentación de la marca y su historia.  
+- Catálogo visual de productos (pan casero, facturas, tortas, empanadas).  
+- Información de local (dirección, horario, teléfono).  
+- Botón de llamada a la acción para delivery (teléfono o WhatsApp).  
+- Formulario de suscripción al newsletter (opcional).  
 
 ## 3. Requisitos funcionales
-| ID | Descripción |
-|----|-------------|
-| RF‑01 | Mostrar hero con título, subtítulo y botón “Conocer más”. |
-| RF‑02 | Galería de imágenes de los planetas con efecto hover y lightbox. |
-| RF‑03 | Sección “Sobre nosotros” con texto y foto del observatorio. |
-| RF‑04 | Formulario de contacto (nombre, email, mensaje) con validación básica. |
-| RF‑05 | Footer con enlaces a redes sociales y datos de contacto. |
+| # | Requisito |
+|---|-----------|
+| RF‑01 | Mostrar hero con foto del local y tagline. |
+| RF‑02 | Listado de productos con foto, nombre y breve descripción. |
+| RF‑03 | Sección “Cómo pedir” con botón “Pedido por Delivery” que abre enlace a WhatsApp. |
+| RF‑04 | Información de contacto y mapa estático de Google Maps (embed). |
+| RF‑05 | Footer con datos legales y redes sociales. |
+| RF‑06 | SEO on‑page: meta title, description, Open Graph, schema.org `Bakery`. |
+| RF‑07 | Cumplir WCAG 2.1 AA (contraste, foco visible, aria‑labels). |
 
 ## 4. Requisitos no funcionales
-- **Rendimiento:** Carga completa < 2 s en conexión 3G.
-- **Accesibilidad:** WCAG 2.1 AA.
-- **SEO:** Metadatos, Open Graph, schema.org `Organization`.
-- **Responsive:** Breakpoints 320 px, 768 px, 1024 px, 1440 px.
-- **Compatibilidad:** Navegadores modernos (Chrome, Firefox, Safari, Edge).
+| # | Requisito |
+|---|-----------|
+| RNF���01 | Carga inicial < 2 s en conexión 3G. |
+| RNF‑02 | Compatibilidad con navegadores modernos (Chrome, Firefox, Safari, Edge). |
+| RNF‑03 | Responsive: mobile‑first, breakpoints 320 px, 768 px, 1024 px. |
+| RNF‑04 | SEO local: palabras clave “panadería artesanal Corrientes”. |
+| RNF‑05 | Accesibilidad: contraste ≥ 4.5:1, navegación por teclado. |
+| RNF‑06 | Código estático (HTML + CSS) sin dependencias externas. |
 
-## 5. Casos de uso
-1. **Visitar la landing:** El usuario abre la URL y ve la página completa.
-2. **Explorar planetas:** Hace click en una miniatura y abre la imagen en grande.
-3. **Contactar:** Completa y envía el formulario; recibe mensaje de confirmación.
+## 5. Arquitectura de la información
+- **Header** → logo + menú ancla.  
+- **Hero** → imagen de fondo + título + CTA.  
+- **Sobre nosotros** → breve historia.  
+- **Productos** → grid de tarjetas.  
+- **Cómo pedir** → pasos + botón delivery.  
+- **Contacto** → formulario + mapa.  
+- **Footer** → datos legales + redes.
 
-## 6. Prioridades
-| Prioridad | Ítem |
-|-----------|------|
-| Alta | Hero, galería, formulario. |
-| Media | SEO, accesibilidad, optimización de imágenes. |
-| Baja | Animaciones avanzadas, integración con redes sociales. |
+## 6. Criterios de aceptación
+- Todas las secciones aparecen correctamente en desktop y mobile.  
+- El botón de delivery abre WhatsApp con número predefinido.  
+- El sitio pasa la auditoría Lighthouse > 90 (Performance, SEO, Accessibility).  
 
-## 7. Entregables
-- Documentación completa (estos archivos).
-- Mockup visual (en `uploads/`).
-- Código HTML/CSS/JS en `src/` (será generado por el Obrero).  
+## 7. Anexos
+- Wireframes (por crear).  
+- Paleta de colores y tipografía (ver `guia-diseno.md`).  
+- Lista de imágenes a subir (`uploads/`).  

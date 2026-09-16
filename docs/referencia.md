@@ -1,52 +1,38 @@
-# Referencia del proyecto – Observatorio Planetario
+# Referencia del proyecto – Panadería Don Corrientes
 
-## 1. Objetivos
-- Presentar el observatorio de forma atractiva y educativa.
-- Mostrar imágenes de los planetas con alta calidad.
-- Facilitar el contacto de usuarios interesados.
+## 1. Objetivos del proyecto
+- **Visibilidad online**: que la panadería aparezca en búsquedas locales.  
+- **Conversión**: que el visitante pueda iniciar un pedido de delivery con un solo click.  
+- **Imagen de marca**: transmitir la artesanía y calidez del negocio.
 
 ## 2. Stack tecnológico elegido
-- **HTML5** + **Tailwind CSS** (CDN) para estilos rápidos y responsivos.
-- **Alpine.js** (CDN) para interactividad ligera (lightbox, toggle de menú).
-- **Netlify** (opcional) para despliegue estático.
+| Capa | Tecnologías | Justificación |
+|------|-------------|---------------|
+| Frontend | HTML5, CSS3 (sin frameworks) | Máxima velocidad, sin dependencias externas. |
+| SEO | meta tags, schema.org `Bakery` | Mejora posicionamiento local. |
+| Accesibilidad | ARIA, atributos `lang`, contraste | Cumplir WCAG 2.1 AA. |
+| Hosting | GitHub Pages (estático) | Gratuito, HTTPS, CDN global. |
+| Imágenes | WebP + fallback JPEG | Optimización de peso. |
 
 ## 3. Estado actual
-- Documentación generada (10 archivos).
-- No hay código fuente aún; el Obrero iniciará con la estructura base.
+- Documentación completa (10 archivos).  
+- Estructura de carpetas creada.  
+- No hay código fuente aún (pendiente del Obrero).  
 
-## 4. Arquitectura de carpetas
-```
-/
-│─ README.md
-│
-├─ docs/
-│   ├─ specs.md
-│   ├─ referencia.md
-│   ├─ guia-diseno.md
-│   ├─ arquitectura-datos.md
-│   ├─ arquitectura-seguridad.md
-│   ├─ stack-tecnologico.md
-│   ├─ analisis-riesgos.md
-│   ├─ plan-desarrollo.md
-│   └─ COMO-USAR-ESTE-PROYECTO.md
-│
-├─ src/
-│   └─ (próximamente index.html, assets, etc.)
-│
-└─ uploads/
-    └─ (imágenes de planetas, logo, etc.)
-```
+## 4. Dependencias externas (mínimas)
+- Google Maps embed (iframe).  
+- Iconos SVG locales (en `uploads/`).  
 
-## 5. Variables clave
-- `PROJECT_NAME = "Observatorio Planetario"`
-- `PRIMARY_COLOR = "#1e3a8a"` (azul oscuro)
-- `FONT_FAMILY = "Inter, system-ui, sans-serif"`
+## 5. Variables de entorno (para producción)
+- `WHATSAPP_NUMBER` → número de teléfono para delivery (ej.: `+5493411234567`).  
 
-## 6. Dependencias externas (CDN)
-- Tailwind CSS (`https://cdn.tailwindcss.com`)
-- Alpine.js (`https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js`)
+## 6. Roadmap rápido
+1. Setup base (estructura, README).  
+2. Implementación HTML/CSS.  
+3. Integración de assets (imágenes, íconos).  
+4. SEO & accesibilidad.  
+5. Pruebas y despliegue.  
 
-## 7. Próximos pasos
-- **Etapa 1:** Setup de carpetas y archivos base (README + docs).  
-- **Etapa 2:** Implementar HTML estático con Tailwind y Alpine.  
-- **Etapa 3:** Optimizar imágenes y pruebas de accesibilidad.  
+## 7. Contacto del operador
+- **Operador:** JRG (Capa 8)  
+- **Mail:** (no disponible en este contexto).  
