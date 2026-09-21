@@ -1,0 +1,10 @@
+## Informe de Estado – Proyecto **test‑inyección‑js**
+
+| **Sección** | **Detalle** |
+|-------------|-------------|
+| **1️⃣ Qué se hizo** | - Se revisó estáticamente el código fuente en `src/server.js`. <br> - Se inspeccionaron los archivos `package.json`, `setup.js` y `protocolo_municipal.pdf`. <br> - Se documentó la auditoría parcial en `docs/auditoria.md` y se añadió la sección de auditoría del PDF. |
+| **2️⃣ Estado actual** | - El servidor Express está configurado con Helmet, limitación de peticiones y manejo de errores. <br> - No se encontraron vulnerabilidades críticas en el código revisado. <br> - El PDF fue analizado y no se hallaron instrucciones ocultas ni código malicioso. <br> - No se ha generado aún la documentación completa del proyecto (especificaciones, arquitectura, etc.). |
+| **3️⃣ Próximos pasos** | 1. Completar la auditoría de `setup.js` (si existe) para confirmar que no envía datos a dominios externos. <br>2. Generar la documentación de arquitectura del proyecto (especificaciones, stack tecnológico, modelo de datos, seguridad, plan de desarrollo, etc.). <br>3. Implementar mitigaciones recomendadas y pruebas de seguridad. <br>4. Preparar el entorno de despliegue y ejecutar pruebas de integración. |
+| **4️⃣ Riesgos detectados** | - **Riesgo bajo**: Posible uso de dependencias sin versiones fijas en `package.json`. <br> - **Riesgo medio**: Falta de validación exhaustiva de entradas en rutas futuras (solo `/api/login` está protegida). <br> - **Riesgo bajo**: No se ha revisado el contenido de `uploads/test-inyeccion-js/` que podría contener scripts maliciosos. <br> - **Riesgo bajo**: Ausencia de políticas de CORS y de protección contra ataques CSRF. |
+
+*Resumen*: El proyecto está en una fase de auditoría preliminar con el servidor básico funcionando sin vulnerabilidades críticas. Se debe avanzar en la documentación completa, validar `setup.js` y aplicar mitigaciones de los riesgos identificados antes de pasar a la fase de desarrollo y despliegue.
